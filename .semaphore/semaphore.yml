@@ -2,8 +2,8 @@ version: v1.0
 name: Go
 agent:
   machine:
-    type: e1-standard-2
-    os_image: ubuntu2004
+    type: f1-standard-2
+    os_image: ubuntu2204
 blocks:
   - name: Install
     task:
@@ -20,7 +20,7 @@ blocks:
           value: 'on'
         - name: GOFLAGS
           value: '-mod=vendor'
-  - name: Test
+  - name: test
     task:
       env_vars:
         - name: GO111MODULE
@@ -36,7 +36,7 @@ blocks:
           - go mod vendor
           - source env-sample
       jobs:
-        - name: Test
+        - name: test
           commands:
             - go test ./...
   - name: Build
@@ -46,8 +46,16 @@ blocks:
           value: 'on'
         - name: GOFLAGS
           value: '-mod=vendor'
+      prologue:
+        commands:
+          - sem-version go 1.23.5
+          - sem-service start postgres
+          - checkout
+          - 'cache restore '
+          - go mod vendor
+          - source env-sample
       jobs:
-        - name: Build
+        - name: go build
           commands:
             - go build -v -o go-mux.bin
             - artifact push project --force go-mux.bin
