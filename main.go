@@ -15,10 +15,10 @@ func main() {
 	if app_db_username == "" {
 		log.Fatal("APP_DB_USERNAME not found in the environment")
 	}
-	// app_db_password := os.Getenv("APP_DB_PASSWORD")
-	// if app_db_password == "" {
-	// 	log.Fatal("APP_DB_PASSWORD not found in the environment")
-	// }
+	app_db_password := os.Getenv("APP_DB_PASSWORD")
+	if app_db_password == "" {
+		log.Fatal("APP_DB_PASSWORD not found in the environment")
+	}
 	app_db_name := os.Getenv("APP_DB_NAME")
 	if app_db_name == "" {
 		log.Fatal("APP_DB_NAME not found in the environment")
